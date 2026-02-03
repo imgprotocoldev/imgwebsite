@@ -137,6 +137,19 @@ body::before {
   letter-spacing: -0.01em;
 }
 
+/* SEO Text - Hidden visually but accessible to search engines */
+.seo-text-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border-width: 0;
+  /* Text remains in DOM for SEO but invisible to users */
+}
+
 .cta-row {
   display: inline-flex;
   gap: 16px;
@@ -2133,6 +2146,21 @@ body::before {
   word-break: break-all;
 }
 
+.contract-title {
+  color: var(--accent-2);
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+.tokenomics-stats-title {
+  color: var(--accent-2);
+  font-size: 18px;
+  font-weight: 600;
+  margin: 24px 0 12px;
+  text-align: center;
+}
+
 .stat-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -4023,7 +4051,7 @@ body::before {
   cursor: pointer;
 }
 
-.radio-option input[type="radio"]:checked + .radio-label {
+.radio-option input[type="radio"]:checked+.radio-label {
   color: var(--accent);
   font-weight: 600;
 }
@@ -4119,24 +4147,24 @@ body::before {
     grid-template-columns: 1fr;
     gap: 40px;
   }
-  
+
   .generator-header-left .section-title {
     font-size: 1.75rem;
   }
-  
+
   .generator-header-left {
     margin-bottom: 24px;
   }
-  
+
   .generator-controls {
     gap: 24px;
   }
-  
+
   .preview-container {
     padding: 16px;
     max-width: 320px;
   }
-  
+
   .radio-group-horizontal {
     flex-direction: column;
     gap: 8px;
