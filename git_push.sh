@@ -12,9 +12,14 @@ if [ ! -d ".git" ]; then
     git init
 fi
 
-# Push to imgprotocoldev/imgsolana.com (set auth once: see README or run remote with PAT)
-GITHUB_REPO="${GITHUB_REPO:-https://github.com/imgprotocoldev/imgsolana.com.git}"
-echo "🔗 Setting GitHub remote to $GITHUB_REPO ..."
+# Push as imgprotocoldev (required: set IMGPROTOCOL_GITHUB_TOKEN so sender is not tekdevreal)
+if [ -n "${IMGPROTOCOL_GITHUB_TOKEN}" ]; then
+  GITHUB_REPO="https://imgprotocoldev:${IMGPROTOCOL_GITHUB_TOKEN}@github.com/imgprotocoldev/imgsolana.com.git"
+  echo "🔗 Using remote as imgprotocoldev (token set)"
+else
+  GITHUB_REPO="https://github.com/imgprotocoldev/imgsolana.com.git"
+  echo "🔗 Using remote (no token: set IMGPROTOCOL_GITHUB_TOKEN to push as imgprotocoldev)"
+fi
 git remote add origin "$GITHUB_REPO" 2>/dev/null || git remote set-url origin "$GITHUB_REPO"
 
 # Add all files
