@@ -14,10 +14,10 @@ fi
 
 # Push as imgprotocoldev (required: set IMGPROTOCOL_GITHUB_TOKEN so sender is not tekdevreal)
 if [ -n "${IMGPROTOCOL_GITHUB_TOKEN}" ]; then
-  GITHUB_REPO="https://imgprotocoldev:${IMGPROTOCOL_GITHUB_TOKEN}@github.com/imgprotocoldev/imgsolana.com.git"
+  GITHUB_REPO="https://imgprotocoldev:${IMGPROTOCOL_GITHUB_TOKEN}@github.com/imgprotocoldev/imgwebsite.git"
   echo "🔗 Using remote as imgprotocoldev (token set)"
 else
-  GITHUB_REPO="https://github.com/imgprotocoldev/imgsolana.com.git"
+  GITHUB_REPO="https://github.com/imgprotocoldev/imgwebsite.git"
   echo "🔗 Using remote (no token: set IMGPROTOCOL_GITHUB_TOKEN to push as imgprotocoldev)"
 fi
 git remote add origin "$GITHUB_REPO" 2>/dev/null || git remote set-url origin "$GITHUB_REPO"
@@ -49,4 +49,4 @@ echo "⬆️  Pushing to GitHub..."
 git push -u origin main
 
 echo "✅ Done! Your project is now backed up on GitHub!"
-echo "🌐 View at: https://github.com/imgprotocoldev/imgsolana.com"
+echo "🌐 View at: https://github.com/imgprotocoldev/imgwebsite"
