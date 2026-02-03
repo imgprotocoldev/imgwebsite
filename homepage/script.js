@@ -160,7 +160,7 @@
       if (solPricePlainEl && solPriceUsd > 0) solPricePlainEl.textContent = formatCurrency(solPriceUsd);
       if (solPriceTabEl && solPriceUsd > 0) solPriceTabEl.textContent = formatCurrency(solPriceUsd);
       calculate();
-    } catch {}
+    } catch { }
   }
 
   async function fetchDexScreenerData() {
@@ -171,10 +171,10 @@
       );
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
-      
+
       if (data.pairs && data.pairs.length > 0) {
         const pair = data.pairs[0]; // Get the first (usually main) pair
-        
+
         // Update liquidity
         const liquidity = Number(pair.liquidity?.usd) || 0;
         if (liquidity > 0) {
@@ -183,7 +183,7 @@
           const mobileLiquidity = document.getElementById('liquidity-mobile');
           if (mobileLiquidity) mobileLiquidity.textContent = formatCompactCurrency(liquidity);
         }
-        
+
         // Update volume
         const volume = Number(pair.volume?.h24) || 0;
         if (volume > 0) {
@@ -192,7 +192,7 @@
           const mobileVolume = document.getElementById('volume-mobile');
           if (mobileVolume) mobileVolume.textContent = formatCompactCurrency(volume);
         }
-        
+
         // Update market cap (price * total supply)
         const priceUsd = Number(pair.priceUsd) || 0;
         const totalSupply = 998959466; // From your tokenomics
@@ -207,7 +207,7 @@
     } catch (error) {
       console.log('DexScreener data fetch failed:', error);
     }
-    
+
     // Fetch token holders count from Solscan
     fetchTokenHolders();
   }
@@ -221,17 +221,17 @@
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
         }
       });
-      
+
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const html = await response.text();
-      
+
       // Look for the holders count in the HTML
       // Solscan typically displays this in a specific format
-      const holdersMatch = html.match(/Holders[^>]*>([^<]+)</) || 
-                          html.match(/holders[^>]*>([^<]+)</i) ||
-                          html.match(/"holders":\s*(\d+)/i) ||
-                          html.match(/Total Holders[^>]*>([^<]+)</);
-      
+      const holdersMatch = html.match(/Holders[^>]*>([^<]+)</) ||
+        html.match(/holders[^>]*>([^<]+)</i) ||
+        html.match(/"holders":\s*(\d+)/i) ||
+        html.match(/Total Holders[^>]*>([^<]+)</);
+
       if (holdersMatch && holdersMatch[1]) {
         const holdersCount = parseInt(holdersMatch[1].replace(/,/g, ''));
         if (!isNaN(holdersCount)) {
@@ -242,7 +242,7 @@
           return;
         }
       }
-      
+
       // Fallback: try to find any number that looks like a holder count
       const fallbackMatch = html.match(/(\d{1,3}(?:,\d{3})*)\s*holders/i);
       if (fallbackMatch && fallbackMatch[1]) {
@@ -255,14 +255,14 @@
           return;
         }
       }
-      
+
       // If all else fails, show a fallback
       console.log('Could not extract holders count from Solscan, using fallback');
       document.getElementById('token-holders').textContent = formatCompactNumber(22803);
       // Update mobile metrics with fallback
       const mobileHolders = document.getElementById('holders-mobile');
       if (mobileHolders) mobileHolders.textContent = formatCompactNumber(22803);
-      
+
     } catch (error) {
       console.log('Token holders fetch failed:', error);
       // Fallback to known value
@@ -330,19 +330,19 @@
     const targetValue = 7; // 7M
     const duration = 2000; // 2 seconds
     const startTime = Date.now();
-    
+
     function updateCounter() {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      
+
       // Easing function for smooth animation
       const easeOutQuart = 1 - Math.pow(1 - progress, 4);
       const currentValue = targetValue * easeOutQuart;
-      
+
       // Format as currency with M suffix
       const formattedValue = `$${currentValue.toFixed(1)}M +`;
       counterElement.textContent = formattedValue;
-      
+
       if (progress < 1) {
         requestAnimationFrame(updateCounter);
       } else {
@@ -350,7 +350,7 @@
         counterElement.textContent = '$7M +';
       }
     }
-    
+
     updateCounter();
   }
 
@@ -418,32 +418,32 @@
 })();
 
 // Simple Mobile Slider
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   console.log('DOM loaded, setting up mobile slider');
-  
+
   const comparisonCards = document.querySelector('.comparison-cards');
   const dots = document.querySelectorAll('.pagination-dots .dot');
   const cards = document.querySelectorAll('.comparison-card');
-  
+
   console.log('Found elements:', {
     comparisonCards: !!comparisonCards,
     dots: dots.length,
     cards: cards.length
   });
-  
+
   // Check if we're on mobile
   function isMobile() {
     const mobile = window.innerWidth <= 768;
     console.log('Mobile check:', { width: window.innerWidth, isMobile: mobile });
     return mobile;
   }
-  
+
   // Function to setup mobile slider
   function setupMobileSlider() {
     console.log('Setting up mobile slider');
-    
+
     let currentSlide = 0;
-    
+
     // Hide all cards except the first one
     cards.forEach((card, index) => {
       if (index === 0) {
@@ -454,7 +454,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(`Hiding card ${index}:`, card.querySelector('.card-title')?.textContent);
       }
     });
-    
+
     // Show pagination dots
     if (dots.length > 0) {
       dots.forEach((dot, index) => {
@@ -462,58 +462,58 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(`Dot ${index} active:`, index === 0);
       });
     }
-    
+
     // Function to show specific slide
     function showSlide(index) {
       console.log(`Switching to slide ${index}`);
-      
+
       // Hide all cards
       cards.forEach(card => {
         card.style.display = 'none';
       });
-      
+
       // Show only the current card
       cards[index].style.display = 'block';
       console.log(`Now showing:`, cards[index].querySelector('.card-title')?.textContent);
-      
+
       // Update active dot
       dots.forEach((dot, i) => {
         dot.classList.toggle('active', i === index);
       });
-      
+
       currentSlide = index;
     }
-    
+
     // Add click events to dots
     dots.forEach((dot, index) => {
-      dot.addEventListener('click', function(e) {
+      dot.addEventListener('click', function (e) {
         e.preventDefault();
         console.log(`Dot ${index} clicked!`);
         showSlide(index);
       });
-      
+
       // Also add touch events for better mobile support
-      dot.addEventListener('touchend', function(e) {
+      dot.addEventListener('touchend', function (e) {
         e.preventDefault();
         console.log(`Dot ${index} touched!`);
         showSlide(index);
       });
     });
-    
+
     // Add touch swipe support
     let startX = 0;
-    
-    comparisonCards.addEventListener('touchstart', function(e) {
+
+    comparisonCards.addEventListener('touchstart', function (e) {
       startX = e.touches[0].clientX;
       console.log('Touch start:', startX);
     }, { passive: true });
-    
-    comparisonCards.addEventListener('touchend', function(e) {
+
+    comparisonCards.addEventListener('touchend', function (e) {
       const endX = e.changedTouches[0].clientX;
       const diffX = startX - endX;
-      
+
       console.log('Touch end:', endX, 'Diff:', diffX);
-      
+
       if (Math.abs(diffX) > 50) {
         if (diffX > 0) {
           // Swipe left - next slide
@@ -528,19 +528,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       }
     }, { passive: true });
-    
+
     console.log('Mobile slider ready');
   }
-  
+
   // Function to setup desktop layout
   function setupDesktopLayout() {
     console.log('Setting up desktop layout');
-    
+
     // Show all cards
     cards.forEach(card => {
       card.style.display = 'block';
     });
-    
+
     // Hide pagination dots
     if (dots.length > 0) {
       dots.forEach(dot => {
@@ -548,16 +548,16 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
   }
-  
+
   // Initial setup based on screen size
   if (isMobile()) {
     setupMobileSlider();
   } else {
     setupDesktopLayout();
   }
-  
+
   // Handle window resize
-  window.addEventListener('resize', function() {
+  window.addEventListener('resize', function () {
     console.log('Window resized to:', window.innerWidth);
     if (isMobile()) {
       setupMobileSlider();
@@ -568,13 +568,13 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Tab System for Integration Section
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const tabButtons = document.querySelectorAll('.tab-button');
   const tabContents = document.querySelectorAll('.tab-content');
 
   function switchTab(tabName) {
     console.log('Switching to tab:', tabName);
-    
+
     // Remove active class from all tabs and contents
     tabButtons.forEach(button => button.classList.remove('active'));
     tabContents.forEach(content => content.classList.remove('active'));
@@ -582,7 +582,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add active class to selected tab and content
     const activeButton = document.querySelector(`[data-tab="${tabName}"]`);
     const activeContent = document.getElementById(`${tabName}-tab`);
-    
+
     if (activeButton && activeContent) {
       activeButton.classList.add('active');
       activeContent.classList.add('active');
@@ -595,34 +595,34 @@ document.addEventListener('DOMContentLoaded', function() {
   // Add event listeners for both click and touch events
   tabButtons.forEach(button => {
     // Click event for desktop
-    button.addEventListener('click', function(e) {
+    button.addEventListener('click', function (e) {
       e.preventDefault();
       const tabName = this.getAttribute('data-tab');
       console.log('Click event on tab:', tabName);
       switchTab(tabName);
     });
-    
+
     // Touch events for mobile
-    button.addEventListener('touchstart', function(e) {
+    button.addEventListener('touchstart', function (e) {
       e.preventDefault();
       const tabName = this.getAttribute('data-tab');
       console.log('Touch event on tab:', tabName);
       switchTab(tabName);
     }, { passive: false });
-    
+
     // Additional mobile support
-    button.addEventListener('touchend', function(e) {
+    button.addEventListener('touchend', function (e) {
       e.preventDefault();
     }, { passive: false });
   });
-  
+
   console.log('Tab system initialized with', tabButtons.length, 'tabs');
 });
 
 // Copy contract address to clipboard
 function copyContractAddress() {
   const contractAddress = 'znv3FZt2HFAvzYf5LxzVyryh3mBXWuTRRng25gEZAjh';
-  
+
   // Try to use the modern clipboard API first
   if (navigator.clipboard && window.isSecureContext) {
     navigator.clipboard.writeText(contractAddress).then(() => {
@@ -645,11 +645,11 @@ function fallbackCopyTextToClipboard(text) {
   textArea.style.left = '0';
   textArea.style.position = 'fixed';
   textArea.style.opacity = '0';
-  
+
   document.body.appendChild(textArea);
   textArea.focus();
   textArea.select();
-  
+
   try {
     const successful = document.execCommand('copy');
     if (successful) {
@@ -658,7 +658,7 @@ function fallbackCopyTextToClipboard(text) {
   } catch (err) {
     console.error('Fallback copy failed: ', err);
   }
-  
+
   document.body.removeChild(textArea);
 }
 
@@ -667,14 +667,14 @@ function showCopyFeedback() {
   const copyButton = document.querySelector('.copy-button');
   if (copyButton) {
     const originalHTML = copyButton.innerHTML;
-    
+
     // Change to checkmark temporarily
     copyButton.innerHTML = `
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="20,6 9,17 4,12"></polyline>
       </svg>
     `;
-    
+
     // Reset after 2 seconds
     setTimeout(() => {
       copyButton.innerHTML = originalHTML;
