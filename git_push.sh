@@ -12,9 +12,10 @@ if [ ! -d ".git" ]; then
     git init
 fi
 
-# Add remote origin
-echo "🔗 Adding GitHub remote..."
-git remote add origin https://github.com/imgprotocoldev/imgsolana.com.git 2>/dev/null || echo "Remote already exists"
+# Push to imgprotocoldev/imgsolana.com (set auth once: see README or run remote with PAT)
+GITHUB_REPO="${GITHUB_REPO:-https://github.com/imgprotocoldev/imgsolana.com.git}"
+echo "🔗 Setting GitHub remote to $GITHUB_REPO ..."
+git remote add origin "$GITHUB_REPO" 2>/dev/null || git remote set-url origin "$GITHUB_REPO"
 
 # Add all files
 echo "📝 Adding files to git..."
